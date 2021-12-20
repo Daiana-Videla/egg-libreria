@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Listado de Libros</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" />
+
+    </head>
+    <body>
+
+        <!--Modulo NAV-->
+        <nav class="navbar navbar-light bg-dark fixed-top">
+            <div class="container d-flex">
+                <div id="Fecha" class="m-0">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-calendar-date text-light"
+                        viewBox="0 0 16 16"
+                        >
+                    <path
+                        d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"
+                        />
+                    <path
+                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                        />
+                    </svg>
+                    <span class="text-light" th:text="${#temporals.format(fecha, 'dd/MMM/yyyy')}"></span> 
+                </div>
+                <div class="text-light">
+                    <form th:action="@{/libro/buscar}" method="post">
+                        <input type="text" placeholder="Buscar por titulo" name="titulo">
+                        <input type="checkbox" id="activo" value="activo" name="activo">
+                        <label for="activo">Activos</label>
+                        <input type="checkbox" id="inactivo" value="inactivo" name="inactivo">
+                        <label for="inactivo">Inactivos</label>
+                        <button type="submit" value="Buscar">Buscar</button>
+                    </form>
+                </div>
+                <p class="text-light m-0">Cantidad de libros: <span th:text="${cantLibros}"></span></p>
+            </div>
+        </nav>
+        <!--ALERTA DE EXITO-->
+        <div th:if="${exito}!=null" class="card text-white bg-success rounded-0 mt-lg-4" >
+            <div class="card-body text-center">
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+        <div th:if="${error}!=null" class="card text-white bg-danger mb-3" >
+            <div class="card-body">
+                <h5 class="card-title">Error</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div> 
+        <div class="container mx-auto my-md-5" >
+            <!--titulo-->
+            <div class="row h-25 m-0 p-0d-flex">
+                <h1 class="mx-auto my-auto">Lista de libros</h1>
+            </div>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">Anio</th>
+                        <th scope="col">Autor</th>
+                        <th scope="col">Editorial</th>
+                        <th scope="col">Ejemplares</th>
+                        <th scope="col">Esta activo?</th>
+                    </tr>
+                </thead>
+                <tbody th:each="libro : ${libros}"> 
+                    <tr>
+                        <th scope="row" th:text="${libro.id}"></th>
+                        <td th:text="${libro.titulo}"></td>
+                        <td th:text="${libro.isbn}"></td>
+                        <td th:text="${libro.anio}"></td>
+                        <td th:text="${libro.autor}"></td>
+                        <td th:text="${libro.editorial}"></td>
+                        <td th:text="${libro.ejemplares}"></td>  
+                        <td>
+                            <i th:if="${libro.alta}" class="fa fa-circle text-success"></i>
+                            <i th:unless="${libro.alta}"   class="fa fa-circle" style="color:red;"></i>
+                        </td>
+                        <td>
+                            <a th:href= "@{/libro/alta/__${libro.id}__}"><i class="fa fa-arrow-up"></i></a>
+                            <a th:href= "@{/libro/baja/__${libro.id}__}"><i class="fa fa-ban"></i></a> 
+                            <a th:href= "@{/libro/modificar/__${libro.id}__}"><i class="fas fa-feather-alt"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <section class="py-5 text-center container">
+                <div class="row py-lg-2">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <a th:href="@{/inicio}" class="btn btn-primary my-2">Volver</a>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

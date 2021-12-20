@@ -1,0 +1,42 @@
+div.row {
+    margin-right: 0px;
+  }
+
+  div.container-fluid {
+    padding-right: 0px;
+  }
+  a {
+    text-decoration: none;
+  }
+a>li:hover{
+  background-color: rgb(78, 75, 75);
+  color: white;
+}
+@media (max-width: 576px) {
+    .mQ{
+      width: 400px;
+      margin: auto;
+      margin-bottom: 15px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .mQ{
+      width: 500px;
+      margin: auto;
+      margin-bottom: 15px;
+    }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .mQ{
+      width: 525px;
+      margin: auto;
+      margin-bottom: 15px;
+    }
+}
+@media (min-width: 992px) {
+  .mQ{
+      width: 400px;
+      margin: auto;
+    }
+}

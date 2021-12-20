@@ -1,0 +1,20 @@
+div.row {
+    margin-right: 0px;
+  }
+
+  div.container-fluid {
+    padding-right: 0px;
+  }
+  a {
+    text-decoration: none;
+  }
+a>li:hover{
+  background-color: rgb(78, 75, 75);
+  color: white;
+}
+form{
+  padding: 10px;
+  border:  2px solid;
+  border-radius: 5px;
+  
+}
